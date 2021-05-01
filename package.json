@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "threejs-vite-boilerplate",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -14,5 +14,9 @@
     "gsap": "^3.6.1",
     "stats.js": "^0.17.0",
     "three": "^0.127.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InfoSysRodener/ThreeJs-Vite-BoilerPlate.git"
   }
 }

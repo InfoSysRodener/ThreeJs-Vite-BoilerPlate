@@ -55,6 +55,7 @@ export default class SceneManager {
     addOrbitControl(){
         const controls = new OrbitControls(this.camera, this.canvas);
         controls.target.set(0, 0, 0);
+        controls.enableDamping = true;
         controls.update();
         return controls;
     }
