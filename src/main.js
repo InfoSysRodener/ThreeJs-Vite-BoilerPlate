@@ -9,8 +9,22 @@ const gui = new dat.GUI();
 //scene
 const canvas = document.querySelector('#canvas');
 const scene = new SceneManager(canvas);
-scene.scene.background = 0x000000;
+let conf = { color : '#a48c5d' }; 
+scene.scene.background.set(conf.color);
 scene.addOrbitControl();
+scene.addFog(1,100,conf.color);
+
+//fog GUI
+const fogFolder = gui.addFolder('FOG');
+fogFolder.add(scene.scene.fog, 'near').min(1).max(100).step(0.01).listen();
+fogFolder.add(scene.scene.fog, 'far').min(1).max(100).step(0.01).listen();
+fogFolder.addColor(conf, 'color').onChange((color)=>{
+	scene.scene.fog.color.set(color);
+	scene.scene.background.set(color);
+	scene.scene.children
+		.filter(obj => obj.name === 'floor')[0]
+		.material.color.set(color)
+});
 const axesHelper = new THREE.AxesHelper(5);
 
 //lights
@@ -26,11 +40,12 @@ const ambiantLight = new THREE.AmbientLight(0xFFFFFF,1);
 scene.add(ambiantLight);
 
 //geometry
-const width = 40;  
-const height = 40;   
+const width = 240;  
+const height = 240;   
 const geometry = new THREE.PlaneGeometry(width,height,100,100);
-const material = new THREE.MeshPhongMaterial( { color: 0x52ff45} );
+const material = new THREE.MeshPhongMaterial( { color: conf.color} );
 const plane = new THREE.Mesh(geometry,material);
+plane.name = 'floor';
 plane.rotation.x = Math.PI * 1.50;
 scene.add(plane);
 
@@ -45,10 +60,11 @@ cube.position.y = 5;
 cube.add(axesHelper);
 scene.add(cube);
 
-gui.add(boxMaterial, 'wireframe').name('Box Wireframe');
-gui.add(cube.scale, 'x').min(1).max(5).step(0.01).name('BoxScale X');
-gui.add(cube.scale, 'y').min(1).max(5).step(0.01).name('BoxScale Y');
-gui.add(cube.scale, 'z').min(1).max(5).step(0.01).name('BoxScale Z');
+const cubeGUI = gui.addFolder('Cube');
+cubeGUI.add(boxMaterial, 'wireframe').name('Box Wireframe');
+cubeGUI.add(cube.scale, 'x').min(1).max(5).step(0.01).name('BoxScale X');
+cubeGUI.add(cube.scale, 'y').min(1).max(5).step(0.01).name('BoxScale Y');
+cubeGUI.add(cube.scale, 'z').min(1).max(5).step(0.01).name('BoxScale Z');
 
 gsap.to(cube.rotation,{ duration:3,delay:3,x: Math.PI * 2 });
 

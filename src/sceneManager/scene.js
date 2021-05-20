@@ -42,6 +42,10 @@ export default class SceneManager {
         this.scene.add(obj);
     }
 
+    addFog(near = 1,far = 2,color = '#FFFFFF'){
+        this.scene.fog = new THREE.Fog(color, near, far);
+    }
+
     onUpdate(){
         this.renderer.render(this.scene,this.camera);
     }
